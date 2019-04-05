@@ -284,6 +284,9 @@
     <Content Include="Src\XComGame\Classes\X2FiraxisLiveClient.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\XComGame\Classes\X2Effect_Persistent.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\XComGame\Classes\X2Effect_ToHitModifier.uc">
       <SubType>Content</SubType>
     </Content>
