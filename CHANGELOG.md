@@ -62,6 +62,7 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
   other ways than just the tooltip and image (#537)
 - Triggers the event `MissionIconSetScanSite` to allow mods to customize a scan site's icon in other
   ways than just the tooltip and image (#537)
+- Triggers the event `SitRepCheckAdditionalRequirements` to allow mods to perform additional checks for sitrep eligibility for a mission (#561)
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
