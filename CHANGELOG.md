@@ -1,7 +1,33 @@
 # Change Log
 All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented in this file.
 
+## General
 
+### Ini settings
+
+#### Mod compatibility
+
+In `XComGame.ini` mods can specify an array of incompatible and/or required mods. This will be used to show an warning popup if they are present. (#524)
+
+```
+[ModSafeName CHModDependency]
++IncompatibleMods=OtherModSafeName
++IgnoreIncompatibleMods=OtherModSafeName
++RequiredMods=OtherModSafeName
++IgnoreRequiredMods=OtherModSafeName
+DisplayName="Fancy Mod"
+```
+
+#### DLC Run Order
+
+In `XComGame.ini` mods can define an array of other mods which dlc hooks should run before and/or after the mods dlc hook.
+LoadPriority can be RUN_STANDARD, RUN_FIRST or RUN_LAST. RunBefore and RunAfter only work within the defined LoadPriority group. Only change load priority if you really sure that its needed for you mod (#511)
+```
+[ModSafeName CHDLCRunOrder]
++RunBefore=OtherModSafeName
++RunAfter=OtherModSafeName
+RunPriorityGroup=RUN_STANDARD
+```
 
 ## Strategy
 
@@ -44,7 +70,9 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - Triggers the event `ShouldCleanupCovertAction` to allow mod control over Covert Action deletion. (#435)
 - Triggers the event `BlackMarketGoodsReset` when the Black Market goods are reset (#473)
 - Triggers the event `OverrideImageForItemAvaliable` to allow mods to override the image shown in eAlert_ItemAvailable (#491)
-- Triggers the event `OverrideNoCaEventMinMonths` to allow mods to force the UI to display no CA nag during first month (#518)
+- Triggers the event `OverrideNoCaEventMinMonths` to allow mods to force the UI to display no CA nag during first month
+- Triggers the event `OverrideCurrentDoom` to allow mods to override doom amount for doom updates (#550)
+- Triggers the event `PsiProjectCompleted` to notify mods when a soldier has finished training in the psi labs (#534)
 - Triggers the event `CustomizeStatusStringsSeparate` in XComGameState_Unit::GetStatusStringsSeparate (#322)
 - Triggers the event `OverridePersonnelStatus` in UIUtilities_Strategy::GetPersonnelStatusStringParts. This
   allows listeners the opportunity to override the status, its time remaining and its colour. (#322)
@@ -63,10 +91,17 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - Triggers the event `MissionIconSetScanSite` to allow mods to customize a scan site's icon in other
   ways than just the tooltip and image (#537)
 - Triggers the event `SitRepCheckAdditionalRequirements` to allow mods to perform additional checks for sitrep eligibility for a mission (#561)
+- Triggers the event `CovertActionStarted` to allow mods to react to it in a flexible manner
+  (instead of hooking into UI mess) (#584)
+- Triggers the event `CovertActionAllowEngineerPopup` to allow mods to forbid the popup (#584)
+- Triggers the event `CovertActionAllowCheckForProjectOverlap` to allow mods to forbid the "de-bunching" logic
+  on CA start (#584)
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
 - UIScanButton now calls OnMouseEventDelegate (#483). Note: DO NOT call ProcessMouseEvents, just set the delegate directly
+- Remove `private` from `X2AIBTBehaviorTree.Behaviors` so that mods can change the behavior trees without
+  overwriting all the necessary entries (#410)
 
 ### Configuration
 - Allow disabling of Factions being initialized on startup by
@@ -78,6 +113,7 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - bDontUnequipWhenWounded prevents soldiers gear gets stripped when getting wounded (#310)
 - iDefaultWeaponTint allows to configure the default weappon tint for randomly generated soldiers (#397)
 - AdditionalAmbushRiskTemplates array represents risk templates that the game will consider at risk to ambush (#485)
+- bSkipCampaignIntroMovies skips the intro movies on campaign start (#543)
 
 ### Improvements
 - Allow `UIStrategyMap` to display custom Faction HQ icons (#76)
@@ -85,6 +121,11 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - Class mods adding an eight rank will now interact better with classes with seven ranks (#1)
 - Allow `XComGameState_WorldRegion::DestinationReached` to use any XCGS_GeoscapeEntity class (#443)
 - Add AmbushMissionSource name property to XComGameState_CovertAction; mods can now specify the ambush mission on creation of Action GameState (#485)
+- Customization localizations now picked up for Torso/Legs/Arms. If the TemplateName already
+  contains the parttype name (ie Torso/Legs/Arms), then the object name in the localization file
+  matches as for other parts (in particular this means Anarchy's Children localizations which already exist in the files
+  are picked up automatically). Otherwise, "_Torso"/"_Legs"/"_Arms" is appended to the template name
+  to create the unique object name. (#328)
 
 ### Fixes
 - Fix an issue in base game where strategy X2EventListenerTemplates only
@@ -95,6 +136,8 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - Fix Loadout utility items when unit has an item equipped in the Ammo Pocket (#99)
 - Fix units unequipping items they shouldn't, resulting in duplicate Paired Weapons (#189)
 - Fix all Covert Actions from being removed when generating covert actions (#435)
+- Fix a pathing issue in base game with "flying" pod leaders where non-flat tiles on their
+  paths prevent them from patrolling (#503)
 
 ## Tactical
 
@@ -140,6 +183,15 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - `OverrideReinforcementsAlert` allows mods to force the display of the reinforcements
   alert panel and also change its text and color (#449)
 - `AllowInteractHack` allows mods to prevent units from being able to hack `InteractiveObject`s (#564)
+- `OverrideEncounterZoneAnchorPoint` allows mods to override the anchor point used by XCOM 2
+  in determining patrol zones for pods (#500)
+- 'OverridePatrolBehavior' allows mods to disable the base game pod patrol logic if they
+  want to handle it themselves (#507)
+- 'DrawDebugLabels' allows mods to draw their own debug information on the canvas used by
+  `XComTacticalController.DrawDebugLabels()` (#490)
+- `OverrideAbilityIconColor` provides a tuple with the same ID as the
+  event and data of the form `[bool IsObjective, string Color]` that allows
+  mods to override the color of soldier abilities in the tactical HUD (#400)
 
 ### Configuration
 - Added ability to modify default spawn size (#18)
@@ -184,6 +236,8 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
   of action points after scamper (#36)
 - Fix some edge cases regarding idle animations and targeting (#269)
 - Fix an issue causing Rapid Fire/Chain Shot/Banish/... entering cover early (#273)
+- Fixed XCGS_Unit::GetStatModifiers() as XCGS_Unit::GetStatModifiersFixed(),
+  X2AbilityToHitCalc_StandardAim, the only vanilla user of this method, changed to match(#313)
 - Fix non-Veteran units not having personality speech (#215)
 - Fix a display issue causing the weapon tooltip to show stale upgrades
   from earlier units (#303)
@@ -192,6 +246,11 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
   their damage with psi flyovers (Psi Bomb, mod abilities) (#326)
 - Fix `X2AbilityToHitCalc_StandardAim` discarding unfavorable (for XCOM) changes
   to hit results from effects (#426)
+- Allow soldiers to be carried out from multiple missions in a campaign (#557)
+- Fix patrol logic when corners of a patrol zone lie outside of the map edges and
+  a pod tries to patrol to any of them (#508)
+- Make disorient reapply to disoriented units so that things like flashbangs can
+  still remove overwatch from disoriented units (#475)
 
 
 ## Miscellaneous
@@ -218,6 +277,7 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - `UpdateTransitionMap` allows overriding the transition map -- dropship interior by default (#388)
 - `UseAlternateMissionIntroDefinition` allows overriding the mission intro (#395)
 - `UnitPawnPostInitAnimTree` allows Allows patching the animtree template before its initialized.(#455)
+- `AbilityTagExpandHandler_CH` expands vanilla AbilityTagExpandHandler to allow reflection
 
 ### Event Hooks
 - Triggers the events `SoldierClassIcon`, `SoldierClassDisplayName`,
@@ -291,6 +351,9 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
 - Additional Photobooth particle system enums for mods (#359)
 - Tweaks to "Resistance Archives" random Legacy Operations UI. Restarts show the correct locked difficulty, and a crash condition on backing out of a restart fixed. (#307)
 - Added CovertAction as its own EventSource on Event 'CovertActionCompleted' (#383)
+- "Arms" no longer always hide forearm decos, but obey the archetype flag as the left/right arms do. (#350)
+- Arms and left/right arm customization dropdowns remain selectable even if they only have one entry
+  iff both arms and seperate left/right arms are available. (#350)
 - Allow mods to check whether VIP units left a mission successfully via the `bRemovedFromPlay`
   flag on `XComGameState_Unit`. This behavior is gated behind the new `CHHelpers.PreserveProxyUnitData`
   config variable. (#465)
@@ -307,3 +370,5 @@ All notable changes to Vanilla 'War Of The Chosen' Behaviour will be documented 
   it assumes they didn't play at all. (#66)
 - Fixes UIPanels animating in with a huge delay when they are direct child panels of
   UIScreen (#341)
+- Appearances now update correctly when a part change differs only by material override (#354)
+- All relevant body parts are now correctly validated when the torso is changed. (#350)
