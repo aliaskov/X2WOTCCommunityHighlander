@@ -226,6 +226,9 @@ var int								BonusCommCapacity;
 var bool							bInstantSingleExcavation;
 var bool							bAllowLightlyWoundedOnMissions; // Resistance Order: Greater Resolve
 var array<PendingFacilityDiscount>	PendingFacilityDiscounts;
+// Highlander
+var float							LootQuantityModifier;
+// Highlander
 
 // scanning modifier
 var float							CurrentScanRate; // how fast the Avenger scans, with a default of 1.0
@@ -4247,7 +4250,10 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 		{
 			UnpackedItemTemplate = class'X2ItemTemplateManager'.static.GetItemTemplateManager().FindItemTemplate(ItemTemplate.ResourceTemplateName);
 			ItemState = UnpackedItemTemplate.CreateInstanceFromTemplate(NewGameState);
-			ItemState.Quantity = ItemTemplate.ResourceQuantity;
+
+			// Highlander
+			ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
+			// Highlander
 
 			if (ItemState != none)
 			{
@@ -9343,4 +9349,7 @@ DefaultProperties
 	CurrentScanRate=1.0
 	BonusAbilityPointScalar=1.0
 	ChosenKnowledgeGainScalar=1.0
+	// Highlander
+	LootQuantityModifier=1.0
+	// Highlander
 }
