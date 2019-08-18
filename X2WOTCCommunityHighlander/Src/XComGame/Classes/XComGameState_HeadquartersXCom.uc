@@ -226,9 +226,6 @@ var int								BonusCommCapacity;
 var bool							bInstantSingleExcavation;
 var bool							bAllowLightlyWoundedOnMissions; // Resistance Order: Greater Resolve
 var array<PendingFacilityDiscount>	PendingFacilityDiscounts;
-// Highlander
-var float							LootQuantityModifier;
-// Highlander
 
 // scanning modifier
 var float							CurrentScanRate; // how fast the Avenger scans, with a default of 1.0
@@ -4236,6 +4233,10 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	local X2ItemTemplate ItemTemplate, UnpackedItemTemplate;
 	local bool bXComHQModified;
 	local int i;
+	// Highlander
+	local float LootQuantityModifier;
+	local XComLWTuple Tuple;
+	// Highlander
 
 	History = `XCOMHISTORY;
 
@@ -4252,6 +4253,18 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 			ItemState = UnpackedItemTemplate.CreateInstanceFromTemplate(NewGameState);
 
 			// Highlander
+			LootQuantityModifier = 1.0;
+
+			Tuple = new class'XComLWTuple';
+			Tuple.Id = 'MultiplyLootCaches';
+			Tuple.Data.Add(1);
+			Tuple.Data[0].kind = XComLWTVFloat;
+			Tuple.Data[0].f = LootQuantityModifier;
+
+			`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self);
+
+			LootQuantityModifier = Tuple.Data[0].f;
+
 			ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
 			// Highlander
 
@@ -9349,7 +9362,4 @@ DefaultProperties
 	CurrentScanRate=1.0
 	BonusAbilityPointScalar=1.0
 	ChosenKnowledgeGainScalar=1.0
-	// Highlander
-	LootQuantityModifier=1.0
-	// Highlander
 }
