@@ -4257,11 +4257,13 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 
 			Tuple = new class'XComLWTuple';
 			Tuple.Id = 'MultiplyLootCaches';
-			Tuple.Data.Add(1);
+			Tuple.Data.Add(2);
 			Tuple.Data[0].kind = XComLWTVFloat;
 			Tuple.Data[0].f = LootQuantityModifier;
+			Tuple.Data[1].kind = XComLWTVObject;
+			Tuple.Data[1].o = ItemState;
 
-			`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self);
+			`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self, NewGameState);
 
 			LootQuantityModifier = Tuple.Data[0].f;
 
