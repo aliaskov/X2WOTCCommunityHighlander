@@ -4235,7 +4235,6 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	local int i;
 	// Highlander
 	local float LootQuantityModifier;
-	local XComLWTuple Tuple;
 	// Highlander
 
 	History = `XCOMHISTORY;
@@ -4247,19 +4246,7 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 		ItemTemplate = ItemState.GetMyTemplate();
 		
 		// Highlander: modify recovered items
-		LootQuantityModifier = 1.0;
-
-		Tuple = new class'XComLWTuple';
-		Tuple.Id = 'MultiplyLootCaches';
-		Tuple.Data.Add(2);
-		Tuple.Data[0].kind = XComLWTVFloat;
-		Tuple.Data[0].f = LootQuantityModifier;
-		Tuple.Data[1].kind = XComLWTVObject;
-		Tuple.Data[1].o = ItemState;
-
-		`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self, NewGameState);
-
-		LootQuantityModifier = Tuple.Data[0].f;
+		LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
 		
 		ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
 		// Highlander
@@ -4271,19 +4258,7 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 			ItemState = UnpackedItemTemplate.CreateInstanceFromTemplate(NewGameState);
 
 			// Highlander: modify recovered items that were unpacked from a loot cache
-			LootQuantityModifier = 1.0;
-
-			Tuple = new class'XComLWTuple';
-			Tuple.Id = 'MultiplyLootCaches';
-			Tuple.Data.Add(2);
-			Tuple.Data[0].kind = XComLWTVFloat;
-			Tuple.Data[0].f = LootQuantityModifier;
-			Tuple.Data[1].kind = XComLWTVObject;
-			Tuple.Data[1].o = ItemState;
-
-			`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self, NewGameState);
-
-			LootQuantityModifier = Tuple.Data[0].f;
+			LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
 
 			ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
 			// Highlander
@@ -4302,6 +4277,23 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	}
 
 	return bXComHQModified;
+}
+
+function float ModifyLootQuantity(XComGameState_Item ItemState, XComGameState NewGameState)
+{
+	local XComLWTuple Tuple;
+
+	Tuple = new class'XComLWTuple';
+	Tuple.Id = 'MultiplyLootCaches';
+	Tuple.Data.Add(2);
+	Tuple.Data[0].kind = XComLWTVFloat;
+	Tuple.Data[0].f = 1.0;
+	Tuple.Data[1].kind = XComLWTVObject;
+	Tuple.Data[1].o = ItemState;
+
+	`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self, NewGameState);
+
+	return Tuple.Data[0].f;
 }
 
 //---------------------------------------------------------------------------------------
