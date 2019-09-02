@@ -4279,7 +4279,7 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	return bXComHQModified;
 }
 
-function float ModifyLootQuantity(XComGameState_Item ItemState, XComGameState NewGameState)
+protected function float ModifyLootQuantity(XComGameState_Item ItemState, XComGameState NewGameState)
 {
 	local XComLWTuple Tuple;
 
