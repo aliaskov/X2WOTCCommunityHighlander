@@ -4233,6 +4233,9 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	local X2ItemTemplate ItemTemplate, UnpackedItemTemplate;
 	local bool bXComHQModified;
 	local int i;
+	// Highlander
+	local float LootQuantityModifier;
+	// Highlander
 
 	History = `XCOMHISTORY;
 
@@ -4241,13 +4244,24 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	{
 		ItemState = XComGameState_Item(History.GetGameStateForObjectID(LootRecovered[i].ObjectID));
 		ItemTemplate = ItemState.GetMyTemplate();
-
+		
+		// Highlander: modify recovered items
+		LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
+		
+		ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
+		// Highlander
+		
 		// this item awards other items when acquired
 		if (ItemTemplate.ResourceTemplateName != '' && ItemTemplate.ResourceQuantity > 0)
 		{
 			UnpackedItemTemplate = class'X2ItemTemplateManager'.static.GetItemTemplateManager().FindItemTemplate(ItemTemplate.ResourceTemplateName);
 			ItemState = UnpackedItemTemplate.CreateInstanceFromTemplate(NewGameState);
-			ItemState.Quantity = ItemTemplate.ResourceQuantity;
+
+			// Highlander: modify recovered items that were unpacked from a loot cache
+			LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
+
+			ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
+			// Highlander
 
 			if (ItemState != none)
 			{
@@ -4263,6 +4277,23 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	}
 
 	return bXComHQModified;
+}
+
+protected function float ModifyLootQuantity(XComGameState_Item ItemState, XComGameState NewGameState)
+{
+	local XComLWTuple Tuple;
+
+	Tuple = new class'XComLWTuple';
+	Tuple.Id = 'MultiplyLootCaches';
+	Tuple.Data.Add(2);
+	Tuple.Data[0].kind = XComLWTVFloat;
+	Tuple.Data[0].f = 1.0;
+	Tuple.Data[1].kind = XComLWTVObject;
+	Tuple.Data[1].o = ItemState;
+
+	`XEVENTMGR.TriggerEvent('MultiplyLootCaches', Tuple, self, NewGameState);
+
+	return Tuple.Data[0].f;
 }
 
 //---------------------------------------------------------------------------------------
