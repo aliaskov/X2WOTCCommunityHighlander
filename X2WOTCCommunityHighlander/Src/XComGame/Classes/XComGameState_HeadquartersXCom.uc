@@ -4243,14 +4243,14 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	for (i = 0; i < LootRecovered.Length; i++)
 	{
 		ItemState = XComGameState_Item(History.GetGameStateForObjectID(LootRecovered[i].ObjectID));
-		ItemTemplate = ItemState.GetMyTemplate();
 		
 		// Highlander: modify recovered items
 		LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
-		
-		ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
+		ItemState.Quantity = ItemState.Quantity * LootQuantityModifier;
 		// Highlander
 		
+		ItemTemplate = ItemState.GetMyTemplate();
+
 		// this item awards other items when acquired
 		if (ItemTemplate.ResourceTemplateName != '' && ItemTemplate.ResourceQuantity > 0)
 		{
@@ -4259,8 +4259,7 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 
 			// Highlander: modify recovered items that were unpacked from a loot cache
 			LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
-
-			ItemState.Quantity = Max(ItemTemplate.ResourceQuantity * LootQuantityModifier, 1);
+			ItemState.Quantity = ItemTemplate.ResourceQuantity * LootQuantityModifier;
 			// Highlander
 
 			if (ItemState != none)
