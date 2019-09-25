@@ -4233,9 +4233,6 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	local X2ItemTemplate ItemTemplate, UnpackedItemTemplate;
 	local bool bXComHQModified;
 	local int i;
-	// Highlander
-	local float LootQuantityModifier;
-	// Highlander
 
 	History = `XCOMHISTORY;
 
@@ -4244,11 +4241,6 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 	{
 		ItemState = XComGameState_Item(History.GetGameStateForObjectID(LootRecovered[i].ObjectID));
 		
-		// Highlander: modify recovered items
-		LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
-		ItemState.Quantity = ItemState.Quantity * LootQuantityModifier;
-		// Highlander
-		
 		ItemTemplate = ItemState.GetMyTemplate();
 
 		// this item awards other items when acquired
@@ -4256,11 +4248,6 @@ function bool UnpackCacheItems(XComGameState NewGameState)
 		{
 			UnpackedItemTemplate = class'X2ItemTemplateManager'.static.GetItemTemplateManager().FindItemTemplate(ItemTemplate.ResourceTemplateName);
 			ItemState = UnpackedItemTemplate.CreateInstanceFromTemplate(NewGameState);
-
-			// Highlander: modify recovered items that were unpacked from a loot cache
-			LootQuantityModifier = ModifyLootQuantity(ItemState, NewGameState);
-			ItemState.Quantity = ItemTemplate.ResourceQuantity * LootQuantityModifier;
-			// Highlander
 
 			if (ItemState != none)
 			{
