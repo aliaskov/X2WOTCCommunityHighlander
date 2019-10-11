@@ -99,6 +99,7 @@ RunPriorityGroup=RUN_STANDARD
   other ways than just the tooltip and image (#537)
 - Triggers the event `MissionIconSetScanSite` to allow mods to customize a scan site's icon in other
   ways than just the tooltip and image (#537)
+<<<<<<< HEAD
 - Triggers the event `SitRepCheckAdditionalRequirements` to allow mods to perform additional checks for sitrep eligibility for a mission (#561)
 - Triggers the event `CovertActionStarted` to allow mods to react to it in a flexible manner
   (instead of hooking into UI mess) (#584)
@@ -107,6 +108,10 @@ RunPriorityGroup=RUN_STANDARD
   on CA start (#584)
 - Triggers the event `AllowActionToSpawnRandomly` to allow mods to prevent certain CAs from being randomly spawned (#594)
 - Triggers the event `OverrideMissionImage` to allow mods to customize mission's image (used in UIMission and subclasses) (#635)
+=======
+- Triggers the event `WillRecoveryTimeModifier` to allow mods to add a modifier to will recovery time project (#650)
+
+>>>>>>> will-recovery-hook
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
