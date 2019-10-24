@@ -108,7 +108,7 @@ RunPriorityGroup=RUN_STANDARD
 - Triggers the event `AllowActionToSpawnRandomly` to allow mods to prevent certain CAs from being randomly spawned (#594)
 - Triggers the event `OverrideMissionImage` to allow mods to customize mission's image (used in UIMission and subclasses) (#635)
 - Triggers the event `WillRecoveryTimeModifier` to allow mods to add a modifier to will recovery time project (#650)
-- Triggers the event `SoldierListItem_ShouldDisplayMetalStatus` to allow mods to enable/disable display of metal status
+- Triggers the event `SoldierListItem_ShouldDisplayMentalStatus` to allow mods to enable/disable display of mental status
   based on additional logic (#651)
 - Triggers the event `UIResistanceReport_ShowCouncil` to allow mods to override whether the council guy (and his remarks)
   is shown on the end-of-month report or not (#663)
