@@ -112,6 +112,8 @@ RunPriorityGroup=RUN_STANDARD
   based on additional logic (#651)
 - Triggers the event `UIResistanceReport_ShowCouncil` to allow mods to override whether the council guy (and his remarks)
   is shown on the end-of-month report or not (#663)
+- Triggers the event `OverrideNextRetaliationDisplay` to allow mods to customize and/or enable/disable "next retaliation"
+  display in `UIAdventOperations` (#667)
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
@@ -234,6 +236,7 @@ RunPriorityGroup=RUN_STANDARD
 - Deprivatise XComAlienPawn.Voice to allow changes by mods (#275)
 - Deprivatise/const config variables in XComParcelManager (#404)
 - Gives SitReps access to the Tactical StartState in order to widen sitrep capabilities (#450)
+- Deprivatise variables in X2TargetingMethod_EvacZone so that it can be effectively subclassed (#165)
 
 ### Improvements
 - Make suppression work with weapons that don't have suppression specific
