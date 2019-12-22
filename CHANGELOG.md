@@ -114,6 +114,10 @@ RunPriorityGroup=RUN_STANDARD
   is shown on the end-of-month report or not (#663)
 - Triggers the event `OverrideNextRetaliationDisplay` to allow mods to customize and/or enable/disable "next retaliation"
   display in `UIAdventOperations` (#667)
+- Triggers the event `OverrideShowPromoteIcon` to allow mods to override whether the promotion icon is
+  displayed for a given soldier or not (#631)
+- Triggers the event `SoldierListItem_ShouldDisplayMentalStatus` to allow mods to enable/disable display of mental status
+  based on additional logic (#651)
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
@@ -168,6 +172,9 @@ RunPriorityGroup=RUN_STANDARD
 - Allow Mods/DLC to modify encounters after creation (#136)
 - Allow Mods/DLC to modify encounters generated as reinforcements (#278)
 - Allow Mods/DLC to alter mission data after SitRep creation (#157)
+- Add an array of `OverrideFinalHitChance` function delegates to `X2AbilityToHitCalc`
+  that mods can add functions to in order to override the default logic for handling
+  hits, grazes and crits (#555)
 
 ### Event Hooks
 
@@ -213,6 +220,12 @@ RunPriorityGroup=RUN_STANDARD
 - `OverrideAbilityIconColor` provides a tuple with the same ID as the
   event and data of the form `[bool IsObjective, string Color]` that allows
   mods to override the color of soldier abilities in the tactical HUD (#400)
+- `OverrideBodyRecovery` allows mods to determine whether incapacitated soldiers are recovered
+  at the end of a mission (which is only supported by full sweep missions with corpse retrieval
+  in the base game) (#571)
+- `OverrideLootRecovery` allows mods to determine whether loot is automatically recovered
+  at the end of a mission (which is only supported by full sweep missions with corpse retrieval
+  in the base game) (#571)
 
 ### Configuration
 - Added ability to modify default spawn size (#18)
@@ -273,7 +286,8 @@ RunPriorityGroup=RUN_STANDARD
   a pod tries to patrol to any of them (#508)
 - Make disorient reapply to disoriented units so that things like flashbangs can
   still remove overwatch from disoriented units (#475)
-
+- Make sure that rescue rings do not disappear on other rescuable units after a
+  neutral unit swaps to team XCom (#551)
 
 ## Miscellaneous
 

@@ -653,9 +653,12 @@ simulated function UIScreen GetScreen_CH( class<UIScreen> ScreenClass, bool Incl
 	local int Index;
 	for( Index = 0; Index < Screens.Length;  ++Index)
 	{
-		if( IncludeSubTypes && ClassIsChildOf(Screens[Index].Class, ScreenClass) )
+		if( IncludeSubTypes )
 		{
-			return Screens[Index];
+			if (ClassIsChildOf(Screens[Index].Class, ScreenClass))
+			{
+				return Screens[Index];
+			}
 		}
 		else if( ScreenClass ==  Screens[Index].Class )
 		{

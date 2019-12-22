@@ -403,7 +403,9 @@ function GiveSuppliesReward(XComGameState NewGameState)
 	local int TotalReward;
 
 	History = `XCOMHISTORY;
-	TotalReward = GetSuppliesReward();
+	// Start Issue #539 - Added the NewGameState argument
+	TotalReward = GetSuppliesReward_CH(, NewGameState);
+	// End Issue #539
 	
 	if (TotalReward > 0)
 	{
@@ -450,8 +452,17 @@ function TriggerProcessNegativeIncome(XComGameState NewGameState, int SupplyValu
 // End Issue #539
 
 //---------------------------------------------------------------------------------------
-// Issue #539: Added the optional NewGameState argument
-function int GetSuppliesReward(optional bool bUseSavedPercentDecrease, optional XComGameState NewGameState)
+// Issue #539
+//
+// Retain this function for backwards compatibility.
+function int GetSuppliesReward(optional bool bUseSavedPercentDecrease)
+{
+	return GetSuppliesReward_CH(bUseSavedPercentDecrease);
+}
+
+// This is the old GetSuppliesReward() function with an optional NewGameState argument
+// that can be passed to listeners that want to modify the supplies reward.
+function int GetSuppliesReward_CH(optional bool bUseSavedPercentDecrease, optional XComGameState NewGameState)
 {
 	local XComGameStateHistory History;
 	local XComGameState_HeadquartersXCom XComHQ;
@@ -468,6 +479,7 @@ function int GetSuppliesReward(optional bool bUseSavedPercentDecrease, optional 
 	{
 		SkipRegionSupplyRewards = TriggerOverrideSupplyDrop(SupplyReward, NewGameState);
 	}
+	// End Issue # 539
 
 	// Issue #539: Only the condition is new.
 	if (!SkipRegionSupplyRewards)
