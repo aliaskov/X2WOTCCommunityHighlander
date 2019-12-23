@@ -130,6 +130,7 @@ RunPriorityGroup=RUN_STANDARD
 - Added `XComGameState_DarkEvent.bTemporaryPreventCompletion` to allow mods to temporary prevent DEs from completing
   even if the time has come (#596)
 - UIScanButton can now work properly when it's a grandchild of UIStrategyMapItem, not only when direct child (#638)
+- Added `X2CovertActionTemplate::bCanNeverBeRookie` to allow mods to forbid a CA from being marked as a rookie one (#695)
 
 ### Configuration
 - Allow disabling of Factions being initialized on startup by
