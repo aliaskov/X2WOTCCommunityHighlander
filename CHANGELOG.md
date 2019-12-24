@@ -121,6 +121,7 @@ RunPriorityGroup=RUN_STANDARD
   based on additional logic (#651)
 - Triggers the event `CovertAction_AllowResActivityRecord` to allow mods to enable/disable "covert action completed"
   record for the monthly resistance report (#696)
+- Triggers the event `OverrideDarkEventCount` to allow mods to change the number of dark events in the monthly report (#711)
 
 ### Modding Exposures
 - Allows mods to add custom items to the Avenger Shortcuts (#163)
