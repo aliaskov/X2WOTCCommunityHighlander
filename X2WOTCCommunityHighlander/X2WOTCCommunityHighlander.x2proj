@@ -113,10 +113,16 @@
     <Content Include="Src\XComGame\Classes\SeqAct_GetPawnFromSaveData.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\XComGame\Classes\SeqAct_SpawnUnitFromAvenger.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\XComGame\Classes\UIAbilityInfoScreen.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\UIAdventOperations.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\XComGame\Classes\UIAfterAction.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\UIAfterAction_ListItem.uc">
@@ -186,6 +192,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\UIInventory_LootRecovered.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\XComGame\Classes\UIInventory_Implants.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\UIListItemString.uc">
@@ -377,6 +386,9 @@
     <Content Include="Src\XComGame\Classes\X2ItemTemplate.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\XComGame\Classes\X2ItemTemplateManager.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\XComGame\Classes\X2MeleePathingPawn.uc">
       <SubType>Content</SubType>
     </Content>
@@ -393,6 +405,12 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\X2SoldierClassTemplateManager.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\XComGame\Classes\X2AIBTDefaultActions.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\XComGame\Classes\X2AIBTDefaultConditions.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\X2Ability.uc">
@@ -431,6 +449,9 @@
     <Content Include="Src\XComGame\Classes\X2TargetingMethod_EvacZone.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\XComGame\Classes\X2TargetingMethod_RocketLauncher.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\XComGame\Classes\X2UnifiedProjectile.uc">
       <SubType>Content</SubType>
     </Content>
@@ -467,10 +488,10 @@
     <Content Include="Src\XComGame\Classes\XComGameState_AdventChosen.uc">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Src\XComGame\Classes\XComGameState_AIReinforcementSpawner.uc">
+    <Content Include="Src\XComGame\Classes\XComGameState_AIGroup.uc">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Src\XComGame\Classes\XComGameState_AIGroup.uc">
+    <Content Include="Src\XComGame\Classes\XComGameState_AIReinforcementSpawner.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\XComGameState_AIUnitData.uc">
@@ -488,6 +509,9 @@
     <Content Include="Src\XComGame\Classes\XComGameState_Effect.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\XComGame\Classes\XComGameState_EvacZone.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\XComGame\Classes\XComGameState_HeadquartersAlien.uc">
       <SubType>Content</SubType>
     </Content>
@@ -495,6 +519,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\XComGameState_HeadquartersProjectRecoverWill.uc">
+          <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\XComGame\Classes\XComGameState_HeadquartersProjectRespecSoldier.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\XComGame\Classes\XComGameState_HeadquartersResistance.uc">
@@ -708,7 +735,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Final release' ">
     <OutputPath>.</OutputPath>
-    <PowershellBuildCommand>powershell.exe –NonInteractive –ExecutionPolicy Unrestricted  -file "$(ScriptsDir)build.ps1" -mod "X2WOTCCommunityHighlander" -srcDirectory "$(SolutionRoot)" -sdkPath "$(SDKInstallPath)" -gamePath "$(GameInstallPath) -final_release"</PowershellBuildCommand>
+    <PowershellBuildCommand>powershell.exe –NonInteractive –ExecutionPolicy Unrestricted  -file "$(ScriptsDir)build.ps1" -mod "X2WOTCCommunityHighlander" -srcDirectory "$(SolutionRoot)" -sdkPath "$(SDKInstallPath)" -gamePath "$(GameInstallPath)" -final_release</PowershellBuildCommand>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>.</OutputPath>

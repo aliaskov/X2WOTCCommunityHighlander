@@ -101,6 +101,10 @@ RunPriorityGroup=RUN_STANDARD
 - Triggers the event `MissionIconSetScanSite` to allow mods to customize a scan site's icon in other
   ways than just the tooltip and image (#537)
 - Triggers the event `SitRepCheckAdditionalRequirements` to allow mods to perform additional checks for sitrep eligibility for a mission (#561)
+- Triggers the event `OverrideShowPromoteIcon` to allow mods to override whether the promotion icon is
+  displayed for a given soldier or not (#631)
+- Triggers the event `SoldierListItem_ShouldDisplayMentalStatus` to allow mods to enable/disable display of mental status
+  based on additional logic (#651)
 - Triggers the event `CovertActionStarted` to allow mods to react to it in a flexible manner
   (instead of hooking into UI mess) (#584)
 - Triggers the event `CovertActionAllowEngineerPopup` to allow mods to forbid the popup (#584)
@@ -111,6 +115,15 @@ RunPriorityGroup=RUN_STANDARD
 - Triggers the event `WillRecoveryTimeModifier` to allow mods to add a modifier to will recovery time project (#650)
 - Triggers the event `SoldierListItem_ShouldDisplayMentalStatus` to allow mods to enable/disable display of mental status
   based on additional logic (#651)
+- Triggers the event `OverridePromotionUIClasses` to allow mods to override the UI classes used for the
+  three different promotion screens (#600)
+- Triggers the event `OverrideRespecSoldierProjectPoints` to allow mods to customize how long it should
+  take to respec a given soldier (#624)
+- Triggers the event `OverrideScienceScore` to allow mods to override the XCOM HQ science score, for
+  example to add their own bonuses or to remove scientists that are engaged in other activities.
+- Triggers the event `CanTechBeInspired` to allow mods to block techs from being inspired, even if they
+  meet the vanilla game's conditions for it (#633)
+- Triggers the event `OverrideMissionImage` to allow mods to customize mission's image (used in UIMission and subclasses) (#635)
 - Triggers the event `UIResistanceReport_ShowCouncil` to allow mods to override whether the council guy (and his remarks)
   is shown on the end-of-month report or not (#663)
 - Triggers the event `OverrideNextRetaliationDisplay` to allow mods to customize and/or enable/disable "next retaliation"
@@ -122,6 +135,12 @@ RunPriorityGroup=RUN_STANDARD
 - Triggers the event `CovertAction_AllowResActivityRecord` to allow mods to enable/disable "covert action completed"
   record for the monthly resistance report (#696)
 - Triggers the event `OverrideDarkEventCount` to allow mods to change the number of dark events in the monthly report (#711)
+- Triggers the event `OnBestGearLoadoutApplied` at the end of `XCGS_Unit::ApplyBestGearLoadout()` to allow mods to make changes to the Unit State. (#676)
+- Triggers the event `ItemAddedToSlot` & `ItemRemovedFromSlot` to allow mods to change Items that have been Equipped/Unequipped during runtime(#694)
+- Triggers the event `CovertAction_AllowResActivityRecord` to allow mods to enable/disable "covert action completed"
+  record for the monthly resistance report (#696)
+- Triggers the event `OverrideDarkEventCount` to allow mods to change the number of dark events in the monthly report (#711)
+- Triggers the event `SitRepCheckAdditionalRequirements` to allow mods to perform additional checks for sitrep eligibility for a mission (#561)
 - Triggers the event `OverrideAddChosenTacticalTagsToMission` to allow mods to override chosen spawning (#722)
 
 ### Modding Exposures
@@ -132,6 +151,8 @@ RunPriorityGroup=RUN_STANDARD
 - Added `XComGameState_DarkEvent.bTemporaryPreventCompletion` to allow mods to temporary prevent DEs from completing
   even if the time has come (#596)
 - UIScanButton can now work properly when it's a grandchild of UIStrategyMapItem, not only when direct child (#638)
+- UIScanButton can now work properly when it's a grandchild of UIStrategyMapItem, not only when direct child (#638)
+- Removed `protectedwrite` from `AcquiredTraits`, `PendingTraits`, and `CuredTraits` in `XComGameState_Unit`, allowing Traits to be modified by external sources (#681)
 - Added `X2CovertActionTemplate::bCanNeverBeRookie` to allow mods to forbid a CA from being marked as a rookie one (#695)
 
 ### Configuration
@@ -183,6 +204,8 @@ RunPriorityGroup=RUN_STANDARD
 - Add an array of `OverrideFinalHitChance` function delegates to `X2AbilityToHitCalc`
   that mods can add functions to in order to override the default logic for handling
   hits, grazes and crits (#555)
+- Adds `OnLoadedSavedGameToTactical` to DLCInfo that serves like the strategy counterpart `OnLoadedSavedGameToStrategy`
+- Allow Mods/DLC to utilize multiplayer teams in singleplayer (#188)
 
 ### Event Hooks
 
@@ -268,6 +291,7 @@ RunPriorityGroup=RUN_STANDARD
 - Register tactical event listeners in TQL (#406)
 - Allow mods to decide which team(s) are granted an ability via X2SitRepEffect_GrantAbilities and better document that class (#445)
 - Allow X2AbilityToHitCalc_StatCheck to check for hit chance modifiers (#467)
+- Allow aliens and other teams to properly register non-XCOM unit locations to adjust their positions accordingly (#619)
 
 ### Fixes
 - Ensure Gremlins use the walk/run animation based on the alert status of their
@@ -296,6 +320,14 @@ RunPriorityGroup=RUN_STANDARD
   still remove overwatch from disoriented units (#475)
 - Make sure that rescue rings do not disappear on other rescuable units after a
   neutral unit swaps to team XCom (#551)
+- Fix rocket targeting so that it isn't always unobstructed when the shooter has
+  a valid step-out tile (#617)
+- Prevent patrolling enemy units from teleporting behind XCOM and revealing the
+  squad (#644)
+- `MindControlLost` fires whenever a unit stops being mind controlled or hacked. The event
+  passes the affected unit state as both event data and event source (#643)
+- Fix issue where trying to break out of a hack that has already been started using the
+  Esc key or the right mouse button bypasses Haywire's cooldown (#648)
 
 ## Miscellaneous
 
@@ -354,6 +386,8 @@ RunPriorityGroup=RUN_STANDARD
 - Unprotect `X2DataSet::bShouldCreateDifficultyVariants` to allow mods to force templates from other packages to use difficulty variants (#413)
 - Allow mods to manipulate X2GameRuleset::EventObserverClasses, eg. on CDOs (#481)
 - Uprivate `XComTacticalMissionManager::CacheMissionManagerCards` to allow mods to use manager's decks (#528)
+- Unprotect `X2ItemTemplateManager::Loadouts` so they can be changed Programmatically (#698)
+- Unprotect `XComGameState_EvacZone::CenterLocation` & `XComGameState_EvacZone::Team` (#702)
 
 ### Improvements
 - Create a mod friendly way to manipulate loot tables (#8)
@@ -406,6 +440,8 @@ RunPriorityGroup=RUN_STANDARD
   by default. This is a breaking change but fixes a lot of problems with vanilla and mod code that
   mistakenly ignores subclasses of screens, particularly those provided by mod. The original behavior
   can still be accessed via new `GetScreen_CH()` and `IsCurrentClass_CH()`. (#290)
+- Allow PCS granting PsiOffense to be equiped by other classes than PsiOperative (#602)
+- Added Inventory Slots `eInvSlot_Wings` and `eInvSlot_ExtraBackpack`. (#678)
 
 ### Fixes
 - Fix Chosen Assassin receiving weaknesses that are exclusive to the
@@ -420,3 +456,7 @@ RunPriorityGroup=RUN_STANDARD
   UIScreen (#341)
 - Appearances now update correctly when a part change differs only by material override (#354)
 - All relevant body parts are now correctly validated when the torso is changed. (#350)
+- Fix `MergeAmmoAsNeeded()` does not work for units spawned from the Avenger (#608)
+- The will recovery project and soldier mental state are now consistent with each other
+  on borderline will values, whereas a rounding error previously could cause will recovery
+  to take a day for Shaken or Tired (#637)
