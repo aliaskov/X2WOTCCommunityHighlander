@@ -148,8 +148,6 @@ RunPriorityGroup=RUN_STANDARD
 - UIScanButton now calls OnMouseEventDelegate (#483). Note: DO NOT call ProcessMouseEvents, just set the delegate directly
 - Remove `private` from `X2AIBTBehaviorTree.Behaviors` so that mods can change the behavior trees without
   overwriting all the necessary entries (#410)
-- Added `XComGameState_DarkEvent.bTemporaryPreventCompletion` to allow mods to temporary prevent DEs from completing
-  even if the time has come (#596)
 - UIScanButton can now work properly when it's a grandchild of UIStrategyMapItem, not only when direct child (#638)
 - UIScanButton can now work properly when it's a grandchild of UIStrategyMapItem, not only when direct child (#638)
 - Removed `protectedwrite` from `AcquiredTraits`, `PendingTraits`, and `CuredTraits` in `XComGameState_Unit`, allowing Traits to be modified by external sources (#681)
