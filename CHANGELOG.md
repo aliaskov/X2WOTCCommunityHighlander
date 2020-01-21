@@ -97,8 +97,6 @@ RunPriorityGroup=RUN_STANDARD
 - UIScanButton now calls OnMouseEventDelegate (#483). Note: DO NOT call ProcessMouseEvents, just set the delegate directly
 - Remove `private` from `X2AIBTBehaviorTree.Behaviors` so that mods can change the behavior trees without
   overwriting all the necessary entries (#410)
-- Added `XComGameState_DarkEvent.bTemporaryPreventCompletion` to allow mods to temporary prevent DEs from completing
-  even if the time has come (#596)
 
 ### Configuration
 - Allow disabling of Factions being initialized on startup by
