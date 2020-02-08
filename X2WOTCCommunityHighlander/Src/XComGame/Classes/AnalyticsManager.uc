@@ -896,6 +896,13 @@ static function EventListenerReturn OnCoverActionComplete( Object EventData, Obj
 		return ELR_NoInterrupt;
 	}
 
+	// Start issue #752
+	if (!TriggerAllowOnCoverActionComplete(EventData, EventSource, GameState, Event, CallbackData))
+	{
+		return ELR_NoInterrupt;
+	}
+	// End issue #752
+
 	History = `XCOMHISTORY;
 
 	// check if we have analytics object
@@ -907,6 +914,32 @@ static function EventListenerReturn OnCoverActionComplete( Object EventData, Obj
 
 	return ELR_NoInterrupt;
 }
+
+// Start issue #752
+private static function bool TriggerAllowOnCoverActionComplete (Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData)
+{
+	local XComLWTuple Tuple;
+
+	Tuple = new class'XComLWTuple';
+	Tuple.Data.Add(6);
+	Tuple.Data[0].kind = XComLWTVBool;
+	Tuple.Data[0].b = true; // Allow by default
+	Tuple.Data[1].kind = XComLWTVObject;
+	Tuple.Data[1].o = EventData;
+	Tuple.Data[2].kind = XComLWTVObject;
+	Tuple.Data[2].o = EventSource;
+	Tuple.Data[3].kind = XComLWTVObject;
+	Tuple.Data[3].o = GameState;
+	Tuple.Data[4].kind = XComLWTVName;
+	Tuple.Data[4].n = Event;
+	Tuple.Data[5].kind = XComLWTVObject;
+	Tuple.Data[5].o = CallbackData;
+
+	`XEVENTMGR.TriggerEvent('AllowOnCoverActionCompleteAnalytics', Tuple);
+
+	return Tuple.Data[0].b;
+}
+// End issue #752
 
 static function EventListenerReturn OnFacilityConstruction( Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData )
 {
